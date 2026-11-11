@@ -1,0 +1,46 @@
+/* Backed primitive colour ramps. Never reference these directly in components — use tokens/semantic.css. */
+:root{
+  /* Ink — the authoritative base */
+  --backed-ink-900:#0B0C0E;
+  --backed-ink-800:#14161A; /* brand ink */
+  --backed-ink-700:#1E2126;
+  --backed-ink-600:#2A2E35;
+  --backed-ink-500:#3B4048;
+
+  /* Paper */
+  --backed-paper:#FFFFFF;
+  --backed-paper-warm:#F7F6F2; /* brand off-white */
+  --backed-paper-warm-2:#F1EFE8;
+
+  /* Coral — the ownable accent */
+  --backed-coral-50:#FFF4F0;
+  --backed-coral-100:#FFE5DC;
+  --backed-coral-200:#FFC7B5;
+  --backed-coral-500:#FF5A36; /* brand accent */
+  --backed-coral-600:#E8481F; /* text-safe accent, 4.5:1 on white */
+  --backed-coral-700:#C43A15;
+
+  /* Warm neutrals */
+  --backed-grey-600:#55595F;
+  --backed-grey-500:#6B6F76; /* brand muted */
+  --backed-grey-400:#8C9098;
+  --backed-grey-300:#B9BBBF;
+  --backed-line:#E7E6DF;     /* brand line */
+  --backed-line-strong:#D8D6CC;
+
+  /* Accent explorations — swap --accent to audition a direction. Not for general use. */
+  --backed-amber-500:#E5A100;
+  --backed-amber-600:#B87F00;
+  --backed-green-500:#16C784;
+  --backed-green-600:#0E8F5D;
+
+  /* Semantic sources — deliberately separate from the brand accent */
+  --backed-success:#12A150;
+  --backed-success-soft:#E6F5EC;
+  --backed-warning:#E9A100;
+  --backed-warning-soft:#FDF3E0;
+  --backed-error:#E5484D;
+  --backed-error-soft:#FDECEC;
+  --backed-info:#2C6ECB;
+  --backed-info-soft:#EAF1FC;
+}

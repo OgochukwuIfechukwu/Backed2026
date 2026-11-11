@@ -1,0 +1,31 @@
+:root{
+  --font-display:"Space Grotesk","Space Grotesk Fallback",-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Manrope","Manrope Fallback",-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* Display — Space Grotesk, tight, confident */
+  --fs-display-xl:76px; --lh-display-xl:0.96; /* @kind other */ --ls-display-xl:-0.035em; /* @kind other */
+  --fs-display-l:60px;  --lh-display-l:1.0; /* @kind other */   --ls-display-l:-0.03em; /* @kind other */
+  --fs-display-m:48px;  --lh-display-m:1.04; /* @kind other */  --ls-display-m:-0.028em; /* @kind other */
+
+  /* Headings */
+  --fs-h1:40px; --lh-h1:1.1; /* @kind other */  --ls-h1:-0.024em; /* @kind other */
+  --fs-h2:32px; --lh-h2:1.15; /* @kind other */ --ls-h2:-0.02em; /* @kind other */
+  --fs-h3:24px; --lh-h3:1.25; /* @kind other */ --ls-h3:-0.015em; /* @kind other */
+  --fs-h4:20px; --lh-h4:1.3; /* @kind other */  --ls-h4:-0.01em; /* @kind other */
+
+  /* Body — Manrope, generous leading */
+  --fs-body-l:18px; --lh-body-l:1.65; /* @kind other */
+  --fs-body:16px;   --lh-body:1.65; /* @kind other */
+  --fs-body-s:14px; --lh-body-s:1.6; /* @kind other */
+  --fs-caption:13px;--lh-caption:1.5; /* @kind other */
+  --fs-micro:11px;  --lh-micro:1.4; /* @kind other */
+
+  /* Eyebrow / label — the only place caps are allowed */
+  --fs-eyebrow:12px; --ls-eyebrow:0.14em; /* @kind other */ --lh-eyebrow:1.2; /* @kind other */
+
+  --fw-regular:400; /* @kind font */ --fw-medium:500; /* @kind font */ --fw-semibold:600; /* @kind font */ --fw-bold:700; /* @kind font */ --fw-extrabold:800; /* @kind font */
+
+  /* Money and any aligned figures. Always apply to premiums, commission, IDs. */
+  --num-tabular:"tnum" 1,"lnum" 1; /* @kind other */
+}

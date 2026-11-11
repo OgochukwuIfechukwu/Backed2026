@@ -1,0 +1,9 @@
+:root{
+  --radius-xs:6px;
+  --radius-sm:8px;
+  --radius-md:12px;  /* default control radius */
+  --radius-lg:16px;  /* default card radius */
+  --radius-xl:20px;
+  --radius-2xl:28px; /* hero panels, quote card */
+  --radius-pill:999px;
+}

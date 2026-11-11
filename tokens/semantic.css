@@ -1,0 +1,101 @@
+/* Semantic aliases. Components reference ONLY these. */
+:root{
+  --bg-page:var(--backed-paper);
+  --bg-alt:var(--backed-paper-warm);
+  --bg-inset:var(--backed-paper-warm-2);
+  --bg-ink:var(--backed-ink-800);
+
+  --surface-card:var(--backed-paper);
+  --surface-card-alt:var(--backed-paper-warm);
+  --surface-raised:var(--backed-paper);
+  --surface-overlay:rgba(11,12,14,.48);
+
+  --text-strong:var(--backed-ink-800);
+  --text-body:var(--backed-ink-700);
+  --text-muted:var(--backed-grey-500);
+  --text-faint:var(--backed-grey-400);
+  --text-inverse:var(--backed-paper);
+  --text-inverse-muted:rgba(255,255,255,.66);
+  --text-accent:var(--backed-coral-600);
+  --text-link:var(--backed-coral-600);
+
+  /* Always-light text for ink surfaces. Theme-INVARIANT by design: ink is ink in
+     light and dark mode alike, so these are never overridden in the dark scope.
+     Use these for tone="inverse" / tone="ink" — never --text-inverse*, which means
+     "dark text on a light chip" and flips with the theme. */
+  --on-ink:#F7F6F2;
+  --on-ink-body:rgba(247,246,242,.82);
+  --on-ink-muted:rgba(247,246,242,.66);
+  --on-ink-faint:rgba(247,246,242,.44);
+  --on-ink-line:rgba(247,246,242,.10);
+  --text-link-hover:var(--backed-coral-700);
+
+  --border-subtle:var(--backed-line);
+  --border-strong:var(--backed-line-strong);
+  --border-ink:var(--backed-ink-800);
+  --border-accent:var(--backed-coral-500);
+
+  --accent:var(--backed-coral-500);
+  --accent-hover:var(--backed-coral-600);
+  --accent-press:var(--backed-coral-700);
+  --accent-soft:var(--backed-coral-100);
+  --accent-faint:var(--backed-coral-50);
+  --on-accent:var(--backed-paper);
+
+  --focus-ring:var(--backed-ink-800);
+  --focus-ring-offset:var(--bg-page);
+  --focus-ring-width:2px;
+  --focus-ring-gap:2px;
+
+  --success:var(--backed-success); --success-bg:var(--backed-success-soft);
+  --warning:var(--backed-warning); --warning-bg:var(--backed-warning-soft);
+  --error:var(--backed-error);     --error-bg:var(--backed-error-soft);
+  --info:var(--backed-info);       --info-bg:var(--backed-info-soft);
+}
+
+/* Dark mode. Ink deepens, accent lifts to the 500 (never the text-safe 600 on dark). */
+[data-theme="dark"]{
+  --bg-page:var(--backed-ink-900);
+  --bg-alt:var(--backed-ink-800);
+  --bg-inset:var(--backed-ink-700);
+  --bg-ink:var(--backed-ink-900);
+
+  --surface-card:#15171B;
+  --surface-card-alt:#1A1D22;
+  --surface-raised:#1E2126;
+  --surface-overlay:rgba(0,0,0,.62);
+
+  --text-strong:#F7F6F2;
+  --text-body:#E4E3DE;
+  --text-muted:#9CA1A9;
+  --text-faint:#767B83;
+  --text-inverse:var(--backed-ink-900);
+  --text-inverse-muted:rgba(11,12,14,.62);
+  --text-accent:#FF7A5C;
+  --text-link:#FF7A5C;
+  --text-link-hover:#FF9377;
+
+  --border-subtle:rgba(247,246,242,.10);
+  --border-strong:rgba(247,246,242,.20);
+  --border-ink:#F7F6F2;
+
+  --accent:var(--backed-coral-500);
+  --accent-hover:#FF7248;
+  --accent-press:#FF8A66;
+  --accent-soft:rgba(255,90,54,.16);
+  --accent-faint:rgba(255,90,54,.08);
+  --on-accent:#14161A;
+
+  --focus-ring:#F7F6F2;
+  --focus-ring-offset:var(--bg-page);
+
+  --success:#3ECF8E; --success-bg:rgba(62,207,142,.14);
+  --warning:#F5B93A; --warning-bg:rgba(245,185,58,.14);
+  --error:#FF6369;   --error-bg:rgba(255,99,105,.14);
+  --info:#6BA5F5;    --info-bg:rgba(107,165,245,.14);
+
+  --shadow-xs:0 1px 2px rgba(0,0,0,.4);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.45);
+  --shadow-md:0 4px 14px rgba(0,0,0,.5);
+  --shadow-lg:0 14px 36px rgba(0,0,0,.55);
+}

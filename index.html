@@ -1,0 +1,188 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Backed Website</title>
+<link rel="icon" href="assets/logo/favicon.svg">
+<link rel="stylesheet" href="styles.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<script src="ds-bundle.js"></script>
+<style>
+/* Backed concept site. Colour, type, spacing and motion all come from the design system's own tokens
+   (styles.css imports tokens/*.css); this block only carries page-level behaviour. */
+html{scroll-behavior:smooth;height:100%}
+body{background:var(--bg-page);color:var(--text-body);margin:0;min-height:100%}
+#root{min-width:0}
+.reveal{opacity:0;transform:translateY(var(--reveal-y));transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+</style>
+<div id="root"></div>
+<script type="text/babel" src="SiteNav.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="RailSection.jsx"></script>
+<script type="text/babel" src="ValueSection.jsx"></script>
+<script type="text/babel" src="DarkSections.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+function Site(){
+  const [theme,setTheme]=useState(() => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+  useEffect(()=>{document.documentElement.setAttribute('data-theme',theme);},[theme]);
+  useEffect(()=>{
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    return ()=>io.disconnect();
+  },[]);
+  return <>
+    <SiteNav theme={theme} onToggleTheme={()=>setTheme(t=>t==='light'?'dark':'light')}/>
+    <main>
+      <Hero/>
+      <div className="reveal"><InsurerSection/></div>
+      <RailSection/>
+      <div className="reveal"><ValueSection/></div>
+      <div className="reveal"><DeveloperSection/></div>
+      <div className="reveal"><TwoSidedSection/></div>
+      <CtaBand/>
+    </main>
+    <SiteFooter/>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Site/>);
+</script>
+<script type="module">
+// The rail, in 3D. Backed's core metaphor made literal: a coral rail resting on ink
+// foundation slabs, with policies travelling from distributors to insurers.
+// Inline rather than a sibling .js so the design-system bundler never tries to resolve
+// the bare "three" specifier; it is served by the import map above instead.
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+const INK_900 = 0x0b0c0e, INK_700 = 0x1e2126, INK_600 = 0x2a2e35;
+const CORAL = 0xff5a36, PAPER = 0xf7f6f2;
+
+function mount(el) {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(el.clientWidth, el.clientHeight);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  el.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(36, el.clientWidth / el.clientHeight, 0.1, 200);
+  const frame = () => {
+    const aspect = el.clientWidth / Math.max(1, el.clientHeight);
+    const halfW = 12.4;
+    const dist = halfW / (Math.tan((camera.fov * Math.PI) / 360) * Math.max(aspect, 1.15));
+    camera.position.set(0, dist * 0.44, dist * 0.92);
+    camera.lookAt(0, 0.15, 0);
+  };
+
+  scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+  const key = new THREE.DirectionalLight(0xffffff, 2.1);
+  key.position.set(-6, 12, 9);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(CORAL, 0.65);
+  rim.position.set(8, 3, -8);
+  scene.add(rim);
+
+  const world = new THREE.Group();
+  world.scale.setScalar(1.02);
+  scene.add(world);
+
+  const mat = (color, rough, metal) =>
+    new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal ?? 0.08 });
+
+  const slab = (w, h, d, color, y, rough) => {
+    const m = new THREE.Mesh(new RoundedBoxGeometry(w, h, d, 4, Math.min(h, d) * 0.32), mat(color, rough));
+    m.position.y = y;
+    return m;
+  };
+
+  world.add(slab(22.4, 0.62, 4.4, INK_900, -1.7, 0.85));
+  world.add(slab(20, 0.62, 3.5, INK_700, -0.96, 0.75));
+  world.add(slab(17.6, 0.62, 2.6, INK_600, -0.22, 0.6));
+
+  const rail = slab(17, 0.42, 1.0, CORAL, 0.42, 0.34);
+  rail.material.metalness = 0.16;
+  world.add(rail);
+
+  const stack = (x, n, color) => {
+    const g = new THREE.Group();
+    for (let i = 0; i < n; i++) {
+      const b = new THREE.Mesh(new RoundedBoxGeometry(1.5, 0.34, 1.5, 3, 0.11), mat(color, 0.55));
+      b.position.set(0, 0.85 + i * 0.5, 0);
+      b.rotation.y = (i - 1) * 0.06;
+      g.add(b);
+    }
+    g.position.x = x;
+    return g;
+  };
+  world.add(stack(-7.6, 3, PAPER));
+  world.add(stack(7.6, 3, INK_600));
+
+  const tokens = [];
+  const tokenGeo = new RoundedBoxGeometry(0.62, 0.42, 0.62, 3, 0.13);
+  for (let i = 0; i < 7; i++) {
+    const t = new THREE.Mesh(tokenGeo, mat(PAPER, 0.42));
+    t.position.set(-8 + i * 2.4, 0.92, 0);
+    world.add(t);
+    tokens.push(t);
+  }
+
+  let px = 0, py = 0, tx = 0, ty = 0, raf = 0;
+  const onPointer = (e) => {
+    const r = el.getBoundingClientRect();
+    tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  };
+  const onLeave = () => { tx = 0; ty = 0; };
+  el.addEventListener('pointermove', onPointer);
+  el.addEventListener('pointerleave', onLeave);
+
+  frame();
+
+  const clock = new THREE.Clock();
+  const tick = () => {
+    raf = requestAnimationFrame(tick);
+    const dt = Math.min(clock.getDelta(), 0.05);
+    if (!reduce) {
+      for (const t of tokens) {
+        t.position.x += dt * 1.5;
+        if (t.position.x > 8.4) t.position.x = -8.4;
+        const edge = Math.min(1, (8.4 - Math.abs(t.position.x)) / 1.6);
+        t.position.y = 0.92 + (1 - edge) * 0.5;
+        t.rotation.y += dt * 0.5;
+      }
+    }
+    px += (tx - px) * (reduce ? 1 : 0.055);
+    py += (ty - py) * (reduce ? 1 : 0.055);
+    world.rotation.y = px * 0.2;
+    world.rotation.x = -0.04 + py * 0.07;
+    renderer.render(scene, camera);
+  };
+  tick();
+
+  const ro = new ResizeObserver(() => {
+    if (!el.clientWidth || !el.clientHeight) return;
+    camera.aspect = el.clientWidth / el.clientHeight;
+    camera.updateProjectionMatrix();
+    frame();
+    renderer.setSize(el.clientWidth, el.clientHeight);
+  });
+  ro.observe(el);
+
+  return () => {
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    el.removeEventListener('pointermove', onPointer);
+    el.removeEventListener('pointerleave', onLeave);
+    renderer.dispose();
+    if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
+  };
+}
+
+window.BackedRail = { mount };
+window.dispatchEvent(new Event('backed-rail-ready'));
+</script>
+
+</body></html>
